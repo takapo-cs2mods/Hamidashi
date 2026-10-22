@@ -1,0 +1,14 @@
+# Visual Studio / ビルドで作られるもの
+.vs/
+bin/
+obj/
+*.user
+Library/
+
+# UI
+Hamidashi/UI/node_modules/
+
+# サムネイルの元データ(大きいので上げない)。公開用は Hamidashi/Properties/thumbnail.png
+*.psd
+/thumbnail.png
+/*.jpg
