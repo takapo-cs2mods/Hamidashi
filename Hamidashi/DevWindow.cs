@@ -78,7 +78,7 @@ namespace Hamidashi
             AddBinding(new TriggerBinding<string>(kGroup, "SubmitChecklist", json => Submit(json)));
         }
 
-        private static string StatusJson()
+        internal static string StatusJson()
         {
             Setting s = Mod.Current;
             StringBuilder sb = new StringBuilder("{");
@@ -131,7 +131,7 @@ namespace Hamidashi
             return fallback;
         }
 
-        private static string OptionsJson()
+        internal static string OptionsJson()
         {
             double now = UnityEngine.Time.realtimeSinceStartupAsDouble;
             if (now - s_OptionsAt < 0.5)
@@ -175,6 +175,7 @@ namespace Hamidashi
                 sb.Append("{\"name\":").Append(Q(p.Name))
                   .Append(",\"label\":").Append(Q(Label(s.GetOptionLabelLocaleID(p.Name), p.Name)))
                   .Append(",\"group\":").Append(Q(Label(s.GetOptionGroupLocaleID(group), group)))
+                  .Append(",\"desc\":").Append(Q(Label(s.GetOptionDescLocaleID(p.Name), string.Empty)))
                   .Append(",\"kind\":").Append(Q(kind));
                 if (!button && p.CanRead)
                 {
@@ -210,7 +211,7 @@ namespace Hamidashi
             return s_OptionsJson = sb.Append(']').ToString();
         }
 
-        private static void SetOption(string name, string value)
+        internal static void SetOption(string name, string value)
         {
             Setting s = Mod.Current;
             PropertyInfo p = s == null ? null : typeof(Setting).GetProperty(name);
@@ -234,7 +235,7 @@ namespace Hamidashi
                 p.SetValue(s, v);
                 s.ApplyAndSave();
                 s_OptionsAt = -1;
-                Mod.log.Info($"[DEV] オプション {name} = {value}");
+                Mod.log.Info($"[UI] オプション {name} = {value}");
             }
             catch (Exception e)
             {
@@ -242,7 +243,7 @@ namespace Hamidashi
             }
         }
 
-        private static void PressOption(string name)
+        internal static void PressOption(string name)
         {
             Setting s = Mod.Current;
             PropertyInfo p = s == null ? null : typeof(Setting).GetProperty(name);
@@ -253,7 +254,7 @@ namespace Hamidashi
 
             p.SetValue(s, true);
             s_OptionsAt = -1;
-            Mod.log.Info($"[DEV] ボタン {name}");
+            Mod.log.Info($"[UI] ボタン {name}");
         }
 
         public static string Q(string v)

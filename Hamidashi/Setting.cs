@@ -27,12 +27,12 @@ namespace Hamidashi
     }
 
     [FileLocation(nameof(Hamidashi))]
-    [SettingsUIGroupOrder(kPresetGroup, kTargetGroup, kNormalGroup, kBadGroup, kActionGroup, kAboutGroup)]
-    [SettingsUIShowGroupName(kPresetGroup, kTargetGroup, kNormalGroup, kBadGroup, kActionGroup, kAboutGroup)]
+    [SettingsUIGroupOrder(kPresetGroup, kTargetGroup, kNormalGroup, kBadGroup, kActionGroup, kPanelGroup, kAboutGroup)]
+    [SettingsUIShowGroupName(kPresetGroup, kTargetGroup, kNormalGroup, kBadGroup, kActionGroup, kPanelGroup, kAboutGroup)]
     public class Setting : ModSetting
     {
         // ビルドごとに更新する(ゲーム内でどのビルドが読み込まれたか見分けるため)
-        public const string kVersion = "v1.0.0";
+        public const string kVersion = "v1.1.0";
 
         public const string kSection = "Main";
         public const string kPresetGroup = "Preset";
@@ -40,6 +40,7 @@ namespace Hamidashi
         public const string kNormalGroup = "Normal";
         public const string kBadGroup = "Bad";
         public const string kActionGroup = "Action";
+        public const string kPanelGroup = "Panel";
         public const string kAboutGroup = "About";
 
         // 設定ファイルの読み込み中・プリセットの適用中は、「カスタム」に切り替えない
@@ -195,6 +196,18 @@ namespace Hamidashi
         [SettingsUIHidden]
         public int Seed { get; set; }
 
+        // ---- パネル(v1.1.0) ----
+        // パネルのボタンはユニバーサルMODメニューに常に置く。ON にすると画面左上のアイコン列にも出す(たかし 2026-10-27)
+        [SettingsUISection(kSection, kPanelGroup)]
+        public bool ShowTopLeftButton { get; set; }
+
+        // パネルの位置(px)。-1 = まだ動かしていない(右側の初期位置に出す)。画面には出さない
+        [SettingsUIHidden]
+        public int PanelX { get; set; }
+
+        [SettingsUIHidden]
+        public int PanelY { get; set; }
+
         // ---- このMODについて ----
         [SettingsUISection(kSection, kAboutGroup)]
         public string Version => kVersion;
@@ -216,6 +229,9 @@ namespace Hamidashi
             BadTwoSpots = true;
             BadSidewalk = true;
             Seed = 0;
+            ShowTopLeftButton = false;
+            PanelX = -1;
+            PanelY = -1;
             m_Preset = HamidashiPreset.L2PeacefulTown;
             ApplyPreset(m_Preset);
         }
@@ -312,6 +328,7 @@ namespace Hamidashi
             d[s.GetOptionGroupLocaleID(Setting.kNormalGroup)] = ja ? "ふつうの車のズレ" : "Everyday imperfection";
             d[s.GetOptionGroupLocaleID(Setting.kBadGroup)] = ja ? "やべーヤツ" : "Bad parkers";
             d[s.GetOptionGroupLocaleID(Setting.kActionGroup)] = ja ? "実行" : "Run";
+            d[s.GetOptionGroupLocaleID(Setting.kPanelGroup)] = ja ? "パネル" : "Panel";
             d[s.GetOptionGroupLocaleID(Setting.kAboutGroup)] = ja ? "このMODについて" : "About";
 
             Opt(d, nameof(Setting.Preset), "プリセット", "Preset",
@@ -348,6 +365,9 @@ namespace Hamidashi
             Opt(d, nameof(Setting.ApplyNow), "適用", "Apply", "今の設定で、街の駐車中の車を全部置き直します。", "Re-places every parked car in the city with the current settings.");
             Opt(d, nameof(Setting.Shuffle), "シャッフル", "Shuffle", "乱数を振り直して適用します(構図に合わせて引き直し)。", "Rerolls the randomness and applies.");
             Opt(d, nameof(Setting.Restore), "元に戻す", "Reset to vanilla", "全部の車をゲーム本来の位置に戻します。", "Puts every parked car back where the game placed it.");
+            Opt(d, nameof(Setting.ShowTopLeftButton), "左上にもボタンを出す", "Also show button at top-left",
+                "パネルを開くボタンは、ユニバーサルMODメニュー(画面右下)にいつもあります。ON にすると画面左上のアイコン列にも出します。",
+                "The button that opens the panel always sits in the Universal Mod Menu (bottom-right). Turn this on to also show it in the top-left icon row.");
             Opt(d, nameof(Setting.Version), "バージョン", "Version", "Hamidashi: Imperfect Parking。見た目だけの MOD で、車の動きや街の計算には関わりません。", "Hamidashi: Imperfect Parking. Visual only; does not touch traffic or simulation.");
             Opt(d, nameof(Setting.Author), "作者", "Author", "takapo(東京のパース屋)。コードは AI(Claude)と一緒に書きました。", "takapo, an architectural visualization artist in Tokyo. Built together with an AI (Claude).");
             Opt(d, nameof(Setting.License), "ライセンス", "License", "Hamidashi は GNU General Public License v3.0 のフリーソフトウェアです。", "Hamidashi is free software under the GNU General Public License v3.0.");

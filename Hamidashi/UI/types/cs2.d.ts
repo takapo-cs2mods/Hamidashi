@@ -7,3 +7,7 @@ declare module "cs2/api" {
 declare module "cs2/modding" {
   export type ModRegistrar = (moduleRegistry: any) => void;
 }
+declare module "cs2/ui" {
+  export const Button: any;
+  export const Tooltip: any;
+}

@@ -15,6 +15,7 @@ Forum: https://forum.paradoxplaza.com/forum/threads/im-making-a-mod-to-make-park
 Vanilla parking lots look like they were parked by robots: perfectly centered, perfectly straight, every nose right on the line. Hamidashi gives your parked cars a little human sloppiness. Or a lot, if you want.
 
 **The name**
+
 Hamidashi (はみ出し) is Japanese for "sticking out" or "going over the line", the word you'd use for a car parked over the white lines. That's exactly what this mod does.
 
 **Features**
@@ -27,7 +28,7 @@ Hamidashi (はみ出し) is Japanese for "sticking out" or "going over the line"
 - 7 presets plus sliders for everything (moving a slider switches to Custom)
 - Applied automatically when a city loads, and to newly parked cars (can be turned off)
 - Apply / Shuffle / Reset to vanilla buttons. Shuffle until you like the layout, handy for screenshots.
-- No icons or panels added to your screen. Settings are in the Options menu only.
+- In-game panel with every setting, so you can tweak while watching the cars. Drag it anywhere, it remembers where you left it. The button lives in the Universal Mod Menu (bottom-right), so your top-left icon row stays clean. (A top-left button is optional, and everything is still in the Options menu too.)
 - Works with existing saves
 
 **Presets**
@@ -63,10 +64,13 @@ L2–L4 are "this could actually happen". L5 and up are for laughs, or for your 
 - Languages: English, Japanese (follows the game language)
 
 **About**
+
 I'm takapo, an architectural visualization artist in Tokyo. I can't write code, so this was built together with an AI (Claude): I came up with the ideas and tested everything in game, Claude wrote the code. Safety and stability came first.
 
 **Open source**
+
 GNU GPL v3. Source code: https://github.com/takapo-cs2mods/Hamidashi
+
 Bug reports and ideas are welcome in the forum thread (discussion below) or as a GitHub Issue.
 
 ## 日本語
@@ -76,6 +80,7 @@ Bug reports and ideas are welcome in the forum thread (discussion below) or as a
 バニラの駐車場は、綺麗に整いすぎとは思いませんか？Hamidashi は駐車中の車に、人間らしい雑さを少しだけ足します。どのくらい雑いかはあなた次第。
 
 **名前の由来**
+
 「はみ出し」。白線からはみ出して停めた車のことです。この MOD がやるのはそれだけです。
 
 **機能**
@@ -88,7 +93,7 @@ Bug reports and ideas are welcome in the forum thread (discussion below) or as a
 - プリセット7種 + 全項目スライダー(スライダーを動かすとカスタムになります)
 - 街のロード時に自動で適用、新しく停まった車にも自動でかかります(オフ可)
 - 「適用」「シャッフル」「元に戻す」ボタン。気に入った並びが出るまでシャッフルできるのでスクショに便利かも
-- 画面にアイコンもパネルも増やしません　設定はオプション画面だけなのでMODアイコンまみれ画面に優しさプラス
+- ゲーム画面で開けるパネル　車を見ながら調整できます。ドラッグで好きな場所へ、位置は記憶。ボタンはユニバーサルMODメニュー(右下)に置いたので、MODアイコンまみれの左上は増えません。あのメニュー、ちゃんと使ってみました。(左上ボタンもオプションで出せます。オプション画面からも全部設定できます)
 - 既存のセーブでそのまま使えます
 
 **プリセット**
@@ -124,10 +129,13 @@ L2〜L4 は「現実にありそう」、L5 からはネタ枠。荒廃した街
 - 言語: 英語・日本語
 
 **作った人**
+
 東京でパース屋をやっています。コードは書けないので、AI(Claude様)と一緒に作りました。アイデア出しとゲーム内のテストが私、コードを書いたのは Claude様です。安全性と安定性を最優先にしています。
 
 **オープンソース**
+
 GNU GPL v3。ソースコード: https://github.com/takapo-cs2mods/Hamidashi
+
 不具合報告やアイデアはフォーラムのスレか GitHub の Issue へどうぞ。
 
 ## For developers / 開発者向け
@@ -139,7 +147,7 @@ How it works (see `Hamidashi/ParkingSystem.cs`):
 - Writes follow what the game does: set `Transform`, update the moving-object search tree (`Game.Objects.SearchSystem`), add `Updated`. Lanes, `m_Lane` / `m_CurvePosition`, free space and pathfinding are never touched. No Harmony.
 - Neighbor checks (overlap avoidance, stacking) query the moving-object search tree by position, so they also work on lots made of many short lanes (e.g. Parking Lot Tool).
 
-Build: Visual Studio 2022 with the official Cities: Skylines II modding toolchain. The `UI` folder (a developer-only test window, Debug builds with `-developerMode` only) is built with webpack after the C# build.
+Build: Visual Studio 2022 with the official Cities: Skylines II modding toolchain. The `UI` folder is built with webpack after the C# build. It holds the in-game panel (`panel.tsx`, opened from the `UniversalModMenu` / optional `GameTopLeft` button in `launcher.tsx`) and a developer-only test window (`devWindow.tsx`, Debug builds with `-developerMode` only).
 
 ## License
 

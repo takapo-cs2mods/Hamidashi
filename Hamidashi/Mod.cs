@@ -27,6 +27,9 @@ namespace Hamidashi
             updateSystem.UpdateAt<ParkingSystem>(SystemUpdatePhase.Modification1);
             updateSystem.UpdateAt<ParkingWatchSystem>(SystemUpdatePhase.Rendering);
 
+            // パネル(v1.1.0): ユニバーサルMODメニュー(と左上)のボタンから開くフローティング窓
+            updateSystem.UpdateAt<PanelUISystem>(SystemUpdatePhase.UIUpdate);
+
             // 開発用の別窓(Debug ビルドで、開発者モードのときだけ表示)
             updateSystem.UpdateAt<DevUISystem>(SystemUpdatePhase.UIUpdate);
 
